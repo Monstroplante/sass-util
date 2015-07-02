@@ -1,0 +1,10 @@
+@function media($min-width, $max-width : false){
+  $q: screen;
+  @if $min-width{
+    $q: $q + ' and (min-width: ' + $min-width + ')';
+  }
+  @if $max-width{
+    $q: $q + ' and (max-width: ' + $max-width + ')';
+  }
+  @return to-string($q, ' ');
+}

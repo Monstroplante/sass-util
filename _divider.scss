@@ -1,0 +1,92 @@
+@mixin divide-grid-items(
+  $items-per-row,
+  $divider-color,
+  $divider-padding: 0,
+  $bg-color: transparent,
+  $divider-width: 1px
+){
+  //reset
+  &:nth-child(n+0):nth-child(n+0){
+    &:before, &:after{ content: none; }
+    border: none;
+  }
+
+  &:not(:nth-child(-n+#{$items-per-row})){
+    @include divide-v-items($divider-color, $divider-padding, $bg-color, $divider-width);
+  }
+
+  &:not(:nth-child(#{$items-per-row}n)){
+    @include divide-h-items($divider-color, $divider-padding, $bg-color, $divider-width);
+  }
+}
+
+@mixin divide-h-items($divider-color, $divider-padding: 0, $bg-color: transparent, $divider-width: 1px){
+  &:not(:last-child){
+    @include right-divider($divider-color, $divider-padding, $bg-color, $divider-width);
+  }
+}
+
+@mixin right-divider($divider-color, $divider-padding: 0, $bg-color: transparent, $divider-width: 1px){
+  border-right: $divider-width%2 solid $bg-color;
+  position: relative;
+  &:after {
+    content: "";
+    background: $divider-color;
+    width: $divider-width;
+    top: $divider-padding;
+    bottom: auto;
+    bottom: $divider-padding;
+    position: absolute;
+    left: 100%;
+    display: block;
+    margin-left: -($divider-width - $divider-width%2)/2;
+    z-index: 1;
+  }
+}
+
+@mixin divide-v-items($divider-color, $divider-padding: 0, $bg-color: transparent, $divider-width: 1px){
+  &:not(:first-child){
+    @include top-divider($divider-color, $divider-padding, $bg-color, $divider-width);
+  }
+}
+
+@mixin top-divider($divider-color, $divider-padding: 0, $bg-color: transparent, $divider-width: 1px){
+  border-top: $divider-width%2 solid $bg-color;
+  position: relative;
+  &:before{
+    content: "";
+    background: $divider-color;
+    height: $divider-width;
+    left: $divider-padding;
+    right: $divider-padding;
+    position: absolute;
+    top: -($divider-width - $divider-width%2)/2;
+    bottom: auto;
+    display: block;
+    z-index: 1;
+  }
+}
+
+@mixin bottom-divider($divider-color, $divider-padding: 0, $bg-color: transparent, $divider-width: 1px){
+  border-bottom: $divider-width%2 solid $bg-color;
+  position: relative;
+  &:before{
+    content: "";
+    background: $divider-color;
+    height: $divider-width;
+    left: $divider-padding;
+    right: $divider-padding;
+    position: absolute;
+    top: auto;
+    bottom: -($divider-width - $divider-width%2)/2;
+    display: block;
+    z-index: 1;
+  }
+}
+
+@mixin bloc-grid-with-divider($items-per-row, $divider-color, $divider-padding){
+  @include block-grid($items-per-row, 0, false, false);
+  &>li{
+    @include  divide-grid-items($items-per-row, $divider-color, $divider-padding);
+  }
+}
